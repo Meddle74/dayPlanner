@@ -5,63 +5,75 @@ var timeConatinerEl = $('.container');
 //global variables
 var date = moment().format('MMMM Do, YYYY');
 var day = moment().format('dddd');
-
 var currentTime = moment().format('HH');
-var currentTimeConverted = moment(currentTime, 'h:mm a').format('h');
 
+
+// times
 var timeSlots = [
   {
     hour: '9',
+    hourLong:'09',
     period: 'am',
     note: '',
   },
   {
     hour: '10',
+    hourLong:'10',
     period: 'am',
     note: '',
   },
   {
     hour: '11',
+    hourLong:'11',
     period: 'am',
     note: '',
   },
   {
     hour: '12',
+    hourLong:'12',
     period: 'pm',
     note: '',
   },
   {
     hour: '1',
+    hourLong:'13',
     period: 'pm',
     note: '',
   },
   {
     hour: '2',
+    hourLong:'14',
     period: 'pm',
     note: '',
   },
   {
     hour: '3',
+    hourLong:'15',
     period: 'pm',
     note: '',
   },
   {
     hour: '4',
+    hourLong:'16',
     period: 'pm',
     note: '',
   },
   {
     hour: '5',
+    hourLong:'17',
     period: 'pm',
     note: '',
   },
 ];
 
+
+//header
 var dayDate = $('<div>').text(day + ', ' + date);
 currentDayEl.append(dayDate);
 
+// display reminder notes
 function displayReminders() {
-  timeSlots.forEach(function (time) {
+  timeSlots.forEach(time => {
     var hourText = JSON.parse(localStorage.getItem(time.hour));
     time.note = hourText;
   });
@@ -69,7 +81,8 @@ function displayReminders() {
 
 displayReminders();
 
-timeSlots.forEach(function (time) {
+// add items  and styling
+timeSlots.forEach(time => {
   var hourRow = $('<form>').addClass('class: row');
   hourRow.attr('id', 'planner');
 
@@ -83,11 +96,11 @@ timeSlots.forEach(function (time) {
 
   appText.text(time.note);
 
-  if (time.hour < currentTimeConverted) {
+  if (time.hourLong < currentTime) {
     appText.addClass('class: past'); // gray
-  } else if (time.hour === currentTimeConverted) {
+  } else if (time.hourLong === currentTime) {
     appText.addClass('class: present'); //red
-  } else if (time.hour > currentTimeConverted) {
+  } else if (time.hourLong > currentTime) {
     appText.addClass('class : future'); //green
   }
 
@@ -99,6 +112,8 @@ timeSlots.forEach(function (time) {
   hourRow.append(timeField, appText, savePlan);
 });
 
+
+// save click action, save reminders
 $('#planner .saveBtn').click(function (event) {
   event.preventDefault();
   var id = $(this).attr('value');
